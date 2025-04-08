@@ -2,8 +2,12 @@
 
 set -e
 
-install_cpupower() {
-    sudo pacman -S --noconfirm cpupower
+install_packages() {
+    for pkg in cpupower; do
+        if ! pacman -Qs "$pkg" > /dev/null; then
+            sudo pacman -S --noconfirm "$pkg"
+        fi
+    done
 }
 
 display_frequency_info() {
@@ -18,7 +22,7 @@ set_frequency() {
 }
 
 main() {
-    install_cpupower
+    install_packages
     display_frequency_info
     set_frequency
 }
