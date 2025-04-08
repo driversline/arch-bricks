@@ -2,8 +2,12 @@
 
 set -e
 
-install_zig() {
-    sudo pacman -S --noconfirm zig
+install_packages() {
+    for pkg in zig; do
+        if ! pacman -Qs "$pkg" > /dev/null; then
+            sudo pacman -S --noconfirm "$pkg"
+        fi
+    done
 }
 
 disable_ly_service() {
@@ -23,7 +27,7 @@ enable_ly_service() {
 }
 
 main() {
-    install_zig
+    install_packages
     disable_ly_service
     clone_and_build_ly
     enable_ly_service
